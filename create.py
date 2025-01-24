@@ -87,7 +87,7 @@ html_template = """
             const tableBody = document.getElementById("books-table").getElementsByTagName("tbody")[0];
 
             books.forEach((book) => {
-                const [author, title] = book.split(" by ").reverse(); // Split from the last " by " and reverse to correct order
+                const [title, author] = book.lastIndexOf(" by ") !== -1 ? book.split(/ by /).reverse() : ["", ""];
                 const row = tableBody.insertRow();
                 row.insertCell(0).innerHTML = `<a href="${overdriveBaseUrl}${encodeURIComponent(title)}" target="_blank">${title}</a>`;
                 row.insertCell(1).innerHTML = `<a href="${overdriveBaseUrl}${encodeURIComponent(author)}" target="_blank">${author}</a>`;
