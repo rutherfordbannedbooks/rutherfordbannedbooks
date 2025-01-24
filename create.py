@@ -156,8 +156,8 @@ def create_bundle(input_file):
         with open(input_file, "r") as file:
             books = file.readlines()
 
-        # Clean up each book name and format it as a JavaScript array element (title by author)
-        books = [f'"{book.strip()}"' for book in books]
+        # Clean up each book name and replace NO-BREAK SPACE with a normal space, then format it as a JavaScript array element (title by author)
+        books = [f'"{book.strip().replace(chr(0xA0), " ")}"' for book in books]
 
         # Join all book entries into a single string for inclusion in the HTML
         books_js_array = ',\n            '.join(books)
@@ -177,3 +177,4 @@ def create_bundle(input_file):
 
 # Run the script
 create_bundle(input_file)
+
