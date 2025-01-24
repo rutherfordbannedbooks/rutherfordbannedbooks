@@ -1,4 +1,4 @@
-# Banning `Looking for Alaska` is a step too far to fascism. 
+# Banning [Looking for Alaska](https://app.thestorygraph.com/books/5be514e8-67a5-4010-8a3a-ddd1506e7e2f) is a step too far to fascism. 
 
 # You should try reading it.
 
