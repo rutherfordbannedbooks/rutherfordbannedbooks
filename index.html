@@ -16,7 +16,7 @@
             A small minority of "adults" have chosen to restrict the freedom of students in Rutherford County School system by banning certain books. These actions limit the availability of important literature that could help expand your knowledge and understanding.
         </p>
         <p>
-            However, there is a way to still access these books! With a library card from the Rutherford County Library District, you can borrow books and audiobooks digitally for free. If a book is not avaliable on overdrive, ask your friendly librarian about digital copies!
+            However, there is a way to still access these books! With a library card from the Rutherford County Library District, you can borrow books and audiobooks digitally for free. If a book is not available on overdrive, ask your friendly librarian about digital copies!
         </p>
         <p>
             The Libby app allows you to borrow these books on your phone. It's available for download on both Android and iOS devices:
@@ -196,19 +196,34 @@
         ];
 
         const rclSearchUrl = "https://explore.rclstn.org/Union/Search?view=list&lookfor=";
+        const storyGraphBaseUrl = "https://app.thestorygraph.com/browse?search_term=";
+        const overdriveBaseUrl = "https://www.overdrive.com/search?q=";
 
         function generateLinks() {
             const booksList = document.getElementById("books-list");
 
             books.forEach(book => {
                 const searchQuery = encodeURIComponent(book);
-                const link = document.createElement("a");
-                link.href = `${rclSearchUrl}${searchQuery}&searchIndex=Keyword&searchSource=local`;
-                link.textContent = book;
-                link.target = "_blank";
 
                 const listItem = document.createElement("li");
-                listItem.appendChild(link);
+
+                // Create Overdrive link with book name and author clickable
+                const overdriveLink = document.createElement("a");
+                overdriveLink.href = `${overdriveBaseUrl}${searchQuery}`;
+                overdriveLink.textContent = `${book} (Overdrive)`;
+                overdriveLink.target = "_blank";
+                listItem.appendChild(overdriveLink);
+
+                // Add a separator between links
+                listItem.appendChild(document.createTextNode(" | "));
+
+                // Create StoryGraph link
+                const storyGraphLink = document.createElement("a");
+                storyGraphLink.href = `${storyGraphBaseUrl}${searchQuery}`;
+                storyGraphLink.textContent = "(Storygraph)";
+                storyGraphLink.target = "_blank";
+                listItem.appendChild(storyGraphLink);
+
                 booksList.appendChild(listItem);
             });
         }
