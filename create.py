@@ -19,7 +19,7 @@ html_template = """
         <h2>This page is not affiliated with Rutherford County Schools nor Rutherford County Library District.</h2>
         <h2>Access Books Digitally</h2>
         <p>
-            A small minority of "adults" have chosen to restrict the freedom of students in Rutherford County by banning certain books. These actions limit the availability of important literature that could help expand your knowledge and understanding.
+            A small minority of "adults" have chosen to restrict the freedom of students in Rutherford County School system by banning certain books. These actions limit the availability of important literature that could help expand your knowledge and understanding.
         </p>
         <p>
             However, there is a way to still access these books! With a library card from outside the Rutherford County school district, you can borrow books and audiobooks digitally for free. If a book is not avaliable on overdrive, ask your friendly librarian about digital copies!
