@@ -13,9 +13,7 @@ html_template = """
     <title>Rutherford County Schools BANNED BOOKS</title>
 </head>
 <body>
-    <h1>Rutherford County Schools BANNED BOOKS</h1>
-
-    <h1>whoops, changing to overdrive to TENNESSEE!</h1>
+    <h1>Rutherford County TENNESSEE - Schools BANNED BOOKS</h1>
     
     <div id="info">
         <h2>This page is not affiliated with Rutherford County Schools nor Rutherford County Library District.</h2>
@@ -34,7 +32,7 @@ html_template = """
             <li><a href="https://apps.apple.com/us/app/libby-the-library-app/id1076402606" target="_blank">Libby for iOS</a></li>
         </ul>
         <p>For more information, including library locations and hours, visit the Rutherford County Library's website:</p>
-        <p><a href="https://rutherfordcountylibrary.org/locations-hours/" target="_blank">Rutherford County Library Locations & Hours</a></p>
+        <p><a href="https://rclstn.org/locations/" target="_blank">Rutherford County Library Locations & Hours</a></p>
     </div>
 
     <p>Below are links to search for banned books on OverDrive:</p>
@@ -48,7 +46,7 @@ html_template = """
             {books_list}
         ];
 
-        const overdriveSearchUrl = "https://ruth.search.bccls.org/search?query=";
+        const overdriveSearchUrl = "https://reads.overdrive.com/search?query=";
 
         function generateLinks() {
             const booksList = document.getElementById("books-list");
