@@ -3,7 +3,7 @@
 # File path for the banned books text file
 input_file = "banned_books.txt"
 
-# HTML template with placeholders for the books array and the new content
+# HTML template with updated links for Rutherford County Library
 html_template = """
 <!DOCTYPE html>
 <html lang="en">
@@ -35,7 +35,7 @@ html_template = """
         <p><a href="https://rclstn.org/locations/" target="_blank">Rutherford County Library Locations & Hours</a></p>
     </div>
 
-    <p>Below are links to search for banned books on OverDrive:</p>
+    <p>Below are links to search for banned books on the Rutherford County Library website:</p>
     
     <ul id="books-list">
         <!-- Links will be dynamically added here -->
@@ -46,7 +46,7 @@ html_template = """
             {books_list}
         ];
 
-        const overdriveSearchUrl = "https://reads.overdrive.com/search?query=";
+        const rclSearchUrl = "https://explore.rclstn.org/Union/Search?view=list&lookfor=";
 
         function generateLinks() {
             const booksList = document.getElementById("books-list");
@@ -54,7 +54,7 @@ html_template = """
             books.forEach(book => {
                 const searchQuery = encodeURIComponent(book);
                 const link = document.createElement("a");
-                link.href = `${overdriveSearchUrl}${searchQuery}&searchType=everything&pageSize=10`;
+                link.href = `${rclSearchUrl}${searchQuery}&searchIndex=Keyword&searchSource=local`;
                 link.textContent = book;
                 link.target = "_blank";
 
