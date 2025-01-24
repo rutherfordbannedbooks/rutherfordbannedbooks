@@ -139,6 +139,11 @@ html_template = """
             }
         }
 
+        // Ensure that the title column is marked as sorted-asc when the page loads
+        window.onload = function() {
+            document.getElementById("title-header").classList.add("sorted-asc");
+        };
+
         generateTable();
     </script>
 </body>
