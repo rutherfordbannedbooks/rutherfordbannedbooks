@@ -53,10 +53,13 @@ html_template = """
         function generateLinks() {
             const booksList = document.getElementById("books-list");
 
-            books.forEach(book => {
+            books.forEach((book, index) => {
                 const searchQuery = encodeURIComponent(book);
 
                 const listItem = document.createElement("li");
+
+                // Add the book number to the list item
+                listItem.textContent = `${index + 1}. `;
 
                 // Create Overdrive link with book name and author clickable
                 const overdriveLink = document.createElement("a");
