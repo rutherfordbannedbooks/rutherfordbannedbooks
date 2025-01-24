@@ -3,7 +3,7 @@
 # File path for the banned books text file
 input_file = "banned_books.txt"
 
-# HTML template with updated links for Rutherford County Library
+# HTML template with updated table and sorting functionality
 html_template = """
 <!DOCTYPE html>
 <html lang="en">
@@ -11,6 +11,26 @@ html_template = """
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rutherford County Schools BANNED BOOKS</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            cursor: pointer;
+        }
+        .sorted-asc::after {
+            content: " ↓";
+        }
+        .sorted-desc::after {
+            content: " ↑";
+        }
+    </style>
 </head>
 <body>
     <h1>Rutherford County TENNESSEE - Schools BANNED BOOKS</h1>
@@ -35,54 +55,91 @@ html_template = """
         <p><a href="https://rclstn.org/locations/" target="_blank">Rutherford County Library Locations & Hours</a></p>
     </div>
 
-    <p>Below are links to search for banned books on the Rutherford County Library website:</p>
-    
-    <ul id="books-list">
-        <!-- Links will be dynamically added here -->
-    </ul>
+    <h2>List of Banned Books</h2>
+    <table id="books-table">
+        <thead>
+            <tr>
+                <th id="title-header" onclick="sortTable(0)">Title</th>
+                <th id="author-header" onclick="sortTable(1)">Author</th>
+                <th>Overdrive</th>
+                <th>StoryGraph</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Book data will be dynamically inserted here -->
+        </tbody>
+    </table>
 
     <script>
         const books = [
             {books_list}
         ];
 
-        const rclSearchUrl = "https://explore.rclstn.org/Union/Search?view=list&lookfor=";
+        const overdriveBaseUrl = "https://explore.rclstn.org/Union/Search?view=list&lookfor=";
         const storyGraphBaseUrl = "https://app.thestorygraph.com/browse?search_term=";
-        const overdriveBaseUrl = "https://www.overdrive.com/search?q=";
 
-        function generateLinks() {
-            const booksList = document.getElementById("books-list");
+        let sortDirection = {
+            0: true,  // Title column: true means ascending by default
+            1: null  // Author column: null means no sort initially
+        };
 
-            books.forEach((book, index) => {
-                const searchQuery = encodeURIComponent(book);
+        function generateTable() {
+            const tableBody = document.getElementById("books-table").getElementsByTagName("tbody")[0];
 
-                const listItem = document.createElement("li");
-
-                // Add the book number to the list item
-                listItem.textContent = `${index + 1}. `;
-
-                // Create Overdrive link with book name and author clickable
-                const overdriveLink = document.createElement("a");
-                overdriveLink.href = `${overdriveBaseUrl}${searchQuery}`;
-                overdriveLink.textContent = `${book} (Overdrive)`;
-                overdriveLink.target = "_blank";
-                listItem.appendChild(overdriveLink);
-
-                // Add a separator between links
-                listItem.appendChild(document.createTextNode(" | "));
-
-                // Create StoryGraph link
-                const storyGraphLink = document.createElement("a");
-                storyGraphLink.href = `${storyGraphBaseUrl}${searchQuery}`;
-                storyGraphLink.textContent = "(Storygraph)";
-                storyGraphLink.target = "_blank";
-                listItem.appendChild(storyGraphLink);
-
-                booksList.appendChild(listItem);
+            books.forEach((book) => {
+                const [author, title] = book.split(" by ").reverse(); // Split from the last " by " and reverse to correct order
+                const row = tableBody.insertRow();
+                row.insertCell(0).innerHTML = `<a href="${overdriveBaseUrl}${encodeURIComponent(title)}" target="_blank">${title}</a>`;
+                row.insertCell(1).innerHTML = `<a href="${overdriveBaseUrl}${encodeURIComponent(author)}" target="_blank">${author}</a>`;
+                row.insertCell(2).innerHTML = `<a href="${overdriveBaseUrl}${encodeURIComponent(title)}" target="_blank">Overdrive</a>`;
+                row.insertCell(3).innerHTML = `<a href="${storyGraphBaseUrl}${encodeURIComponent(title)}" target="_blank">StoryGraph</a>`;
             });
         }
 
-        generateLinks();
+        function sortTable(columnIndex) {
+            const table = document.getElementById("books-table");
+            let rows = Array.from(table.rows).slice(1);
+            let sortedRows;
+
+            // Toggle sort direction
+            if (sortDirection[columnIndex] === null || sortDirection[columnIndex] === false) {
+                sortDirection[columnIndex] = true; // Set to ascending
+            } else {
+                sortDirection[columnIndex] = false; // Set to descending
+            }
+
+            if (columnIndex === 0) {  // Sort by Title
+                sortedRows = rows.sort((a, b) => {
+                    const titleA = a.cells[columnIndex].textContent.trim().toLowerCase();
+                    const titleB = b.cells[columnIndex].textContent.trim().toLowerCase();
+                    return sortDirection[columnIndex] ? (titleA < titleB ? -1 : 1) : (titleA < titleB ? 1 : -1);
+                });
+            } else if (columnIndex === 1) {  // Sort by Author
+                sortedRows = rows.sort((a, b) => {
+                    const authorA = a.cells[columnIndex].textContent.trim().toLowerCase();
+                    const authorB = b.cells[columnIndex].textContent.trim().toLowerCase();
+                    return sortDirection[columnIndex] ? (authorA < authorB ? -1 : 1) : (authorA < authorB ? 1 : -1);
+                });
+            }
+
+            table.tBodies[0].append(...sortedRows);
+            updateSortArrows(columnIndex);
+        }
+
+        function updateSortArrows(sortedColumn) {
+            // Reset all arrows
+            document.getElementById("title-header").classList.remove("sorted-asc", "sorted-desc");
+            document.getElementById("author-header").classList.remove("sorted-asc", "sorted-desc");
+
+            // Update the sorted column's arrow
+            if (sortedColumn === 0) {
+                document.getElementById("title-header").classList.add(sortDirection[0] ? "sorted-asc" : "sorted-desc");
+            } else if (sortedColumn === 1) {
+                document.getElementById("author-header").classList.add(sortDirection[1] ? "sorted-asc" : "sorted-desc");
+            }
+        }
+
+        generateTable();
     </script>
 </body>
 </html>
@@ -94,7 +151,7 @@ def create_bundle(input_file):
         with open(input_file, "r") as file:
             books = file.readlines()
 
-        # Clean up each book name and format it as a JavaScript array element
+        # Clean up each book name and format it as a JavaScript array element (title by author)
         books = [f'"{book.strip()}"' for book in books]
 
         # Join all book entries into a single string for inclusion in the HTML
